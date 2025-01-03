@@ -76,7 +76,7 @@
     set rpms to when(ARCH_SHORT != "arm64",
         cat(rpms, [[
             "filename": "netstandard-targeting-pack.rpm",
-            "url": cat("https://dotnetcli.azureedge.net/dotnet/Runtime/3.1.0/netstandard-targeting-pack-2.1.0-", ARCH_SHORT, ".rpm"),
+            "url": cat("https://builds.dotnet.microsoft.com/dotnet/Runtime/3.1.0/netstandard-targeting-pack-2.1.0-", ARCH_SHORT, ".rpm"),
             "sha": VARIABLES[join(["netstandard-targeting-pack-2.1.0", "linux-rpm", ARCH_SHORT, "sha"], "|")],
             "sha-var-name": commonShaVarName
         ]]),
@@ -110,6 +110,7 @@ if copyEnabled:{{InsertTemplate("../Dockerfile.linux.copy-files",
     ])
 }}
 }}# Install .NET SDK
+RUN echo 23.50.49.9 builds.dotnet.microsoft.com >> /etc/hosts
 RUN {{if ARGS["use-local-version-var"]:sdk_version={{VARIABLES[cat("sdk|", dotnetVersion, "|build-version")]}} \
 {{
 if isFullAzureLinux:    dotnet_version={{VARIABLES[cat("runtime|", dotnetVersion, "|build-version")]}} \
